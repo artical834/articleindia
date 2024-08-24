@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaon News Portfolio</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <img src="images/norwegian-village-banner-landscape-near-fjord-1192546849.png" alt="Village Banner" class="banner-image">
+        <h1>HEADLINES HUB</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#questions">Questions</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#add-question">Add Question</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <h2>Welcome to Gaon News Portfolio</h2>
+        <p>Here you will find the latest articles and updates from our village.</p>
+    </section>
+
+    <section id="download-article">
+        <h2>view</h2>
+        <a href="articals 2.html" download class="download-link">India Article</a>
+    </section>
+<section>
+        <a href="articals 3.html" download class="download-link">India’s Independence Article</a>
+
+    </section>
+<section>
+    <a href="artical 4.html" download class="download-link">Timeline and Key Events in Drafting the Indian Constitution
+artical     </a>
+</section>
+    <section id="questions">
+        <h2>Questions Section</h2>
+        <div id="questions-container">
+            <!-- Questions items will be dynamically added here -->
+        </div>
+    </section>
+
+    <section id="question-details" style="display:none;">
+        <h2>Question Details</h2>
+        <div id="question-content">
+            <!-- Question details will be dynamically added here -->
+        </div>
+        <button onclick="hideDetails()">Close</button>
+    </section>
+
+    <section id="add-question">
+        <h2>Add Question</h2>
+        <form id="question-form">
+            <label for="question">Question:</label>
+            <input type="text" id="question" name="question" required>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <label for="details">Details:</label>
+            <textarea id="details" name="details" required></textarea>
+            <button type="submit">Add Question</button>
+        </form>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions to share, please contact us at: <a href="mailto:villagenews897@gmail.com">villagenews897@gmail.com</a></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Gaon News Portfolio. All rights reserved.</p>
+        <img src="images/indian-flag.png" alt="Indian Flag" class="indian-flag">
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questionsContainer = document.getElementById('questions-container');
+            const questionDetails = document.getElementById('question-details');
+            const questionContent = document.getElementById('question-content');
+            const questionForm = document.getElementById('question-form');
+
+            // Load questions from local storage
+            function loadQuestions() {
+                const questions = JSON.parse(localStorage.getItem('questions')) || [];
+                questionsContainer.innerHTML = ''; // Clear existing questions
+                questions.forEach((item, index) => {
+                    const question = document.createElement('div');
+                    question.className = 'question-item';
+                    question.innerHTML = `
+                        <h3>${item.question}</h3>
+                        <p>Date: ${item.date}</p>
+                        <p>${item.details}</p>
+                        <button onclick="showDetails(${index})">Read More</button>
+                    `;
+                    questionsContainer.appendChild(question);
+                });
+            }
+
+            // Show question details
+            window.showDetails = function(index) {
+                const questions = JSON.parse(localStorage.getItem('questions')) || [];
+                const item = questions[index];
+                questionContent.innerHTML = `
+                    <h3>${item.question}</h3>
+                    <p>Date: ${item.date}</p>
+                    <p>${item.details}</p>
+                `;
+                questionDetails.style.display = 'block';
+            }
+
+            // Hide question details
+            window.hideDetails = function() {
+                questionDetails.style.display = 'none';
+            }
+
+            // Add question to local storage
+            function addQuestion(question, date, details) {
+                const questions = JSON.parse(localStorage.getItem('questions')) || [];
+                questions.push({ question, date, details });
+                localStorage.setItem('questions', JSON.stringify(questions));
+                loadQuestions();
+            }
+
+            // Form submission
+            questionForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const question = document.getElementById('question').value;
+                const date = document.getElementById('date').value;
+                const details = document.getElementById('details').value;
+                addQuestion(question, date, details);
+                questionForm.reset();
+            });
+
+            // Initial load
+            loadQuestions();
+        });
+    </script>
+</body>
+</html>
